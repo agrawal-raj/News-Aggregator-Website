@@ -1,11 +1,12 @@
+# from unicodedata import category
 import requests
 from django.utils import timezone
 from news.models import Article
 
 
-def fetch_news():
+def fetch_news(category= 'general'):
     api_key= "be4ca9a66fc4426a997c4f343cbb282a"
-    url= f'https://newsapi.org/v2/top-headlines?country=us&apiKey={api_key}'
+    url= f'https://newsapi.org/v2/top-headlines?country=us&category={category}&apiKey={api_key}'
     response = requests.get(url)
     data= response.json()
     
@@ -15,7 +16,8 @@ def fetch_news():
             description = item['description'],
             url = item['url'],
             published_at = timezone.now(),
-            source = item['source']['name']
+            source = item['source']['name'],
+            category= category
             
         )
         
